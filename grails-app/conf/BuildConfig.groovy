@@ -36,9 +36,9 @@ grails.project.dependency.resolution = {
 
 grails.project.dependency.distribution = {
     remoteRepository(id: "pluginsSnapshot", url: "http://repo.icescrum.org/artifactory/plugins-snapshot-local/") {
-        authentication username: "admin", password: "{DESede}h0ZLiTL1dpY="
+        authentication username: "", password: ""
     }
     remoteRepository(id: "pluginsRelease", url: "http://repo.icescrum.org/artifactory/plugins-release-local/") {
-        authentication username: "admin", password: "{DESede}h0ZLiTL1dpY="
+        authentication username: "", password: ""
     }
 }

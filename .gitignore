@@ -1,4 +1,6 @@
-# Compiled source #
+*.iml
+
+ompiled source #
 ###################
 *.com
 *.class
@@ -6,4 +8,14 @@
 *.exe
 *.o
 *.so
-*.iml
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+
+*.log
+*.zip
+*.zip.sha1
