@@ -1,0 +1,18 @@
+<project xmlns='http://maven.apache.org/POM/4.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd'>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.icescrum.plugins</groupId>
+  <artifactId>entry-points</artifactId>
+  <packaging>zip</packaging>
+  <version>0.1</version>
+  <name>Entry points for your grails app (entry points inside gsp)</name>
+  <description>
+        used in iceScrum -&gt; http://www.icescrum.org
+    </description>
+  <url>http://www.icescrum.org/plugin/entry-points</url>
+  <developers>
+    <developer>
+      <name>Vincent Barrier</name>
+      <email>barrier.vincent@gmail.com</email>
+    </developer>
+  </developers>
+</project>

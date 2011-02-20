@@ -1,0 +1,17 @@
+<plugin name='entry-points' version='0.1' grailsVersion='1.3.7 &gt; *'>
+  <author>Vincent Barrier</author>
+  <authorEmail>barrier.vincent@gmail.com</authorEmail>
+  <title>Entry points for your grails app (entry points inside gsp)</title>
+  <description>
+        used in iceScrum -&gt; http://www.icescrum.org
+    </description>
+  <documentation>http://www.icescrum.org/plugin/entry-points</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>Config</resource>
+    <resource>org.icescrum.plugins.entryPoints.services.EntryPointsService</resource>
+    <resource>org.icescrum.plugins.entryPoints.EntryPointsTagLib</resource>
+  </resources>
+  <dependencies />
+  <behavior />
+</plugin>
