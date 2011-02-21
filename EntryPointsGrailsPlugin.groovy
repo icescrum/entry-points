@@ -18,7 +18,7 @@
 import org.icescrum.plugins.entryPoints.artefacts.EntryPointsArtefactHandler
 
 class EntryPointsGrailsPlugin {
-    def groupId = 'org.icescrum.plugins'
+    def groupId = 'org.icescrum'
     // the plugin version
     def version = "0.2"
     // the version or versions of Grails the plugin is designed for
