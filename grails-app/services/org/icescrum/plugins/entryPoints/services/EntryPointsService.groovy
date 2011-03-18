@@ -63,4 +63,8 @@ class EntryPointsService implements InitializingBean {
         log.info("Reloading entries points")
         loadEntries()
     }
+
+    def getEntriesToChain(def pointId){
+        entriesByPointId[pointId]?.findAll{it.form}
+    }
 }

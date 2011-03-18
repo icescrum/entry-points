@@ -23,7 +23,7 @@ class EntryPointsBuilder implements GroovyInterceptable {
 
     private _entries
     private _entryPointBuilder
-    private _data = [points:[]]
+    private _data = [ref:[]]
 
     private final log = LoggerFactory.getLogger(this.class.name)
 
@@ -40,16 +40,16 @@ class EntryPointsBuilder implements GroovyInterceptable {
             entryPointDefinition.resolveStrategy = Closure.DELEGATE_FIRST
             entryPointDefinition()
 
-            _data.points?.each{ pointId ->
-                if (!_entries[pointId]){
-                    _entries[pointId] = []
+            _data.ref?.each{ ref ->
+                if (!_entries[ref]){
+                    _entries[ref] = []
                 }
                 def entry
                 if (_data.controller){
-                    entry = [action:_data.action?:'index',controller:_data.controller]
-                    _entries[pointId] << entry
+                    entry = [action:_data.action?:'index',controller:_data.controller, form:_data.form?:false]
+                    _entries[ref] << entry
                     if (log.debugEnabled)
-                        log.debug("Defined new entry for point '$pointId' -> '$entry'")
+                        log.debug("Defined new entry for point '$ref' -> '$entry'")
                 }else{
                     if (log.debugEnabled)
                         log.debug("Entry point must have view OR action AND controller")
@@ -58,7 +58,7 @@ class EntryPointsBuilder implements GroovyInterceptable {
 
             // clear for next
             _data.clear()
-            _data.points = []
+            _data.ref = []
         }
     }
 

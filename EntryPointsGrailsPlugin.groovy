@@ -16,11 +16,12 @@
 *
 */
 import org.icescrum.plugins.entryPoints.artefacts.EntryPointsArtefactHandler
+import org.icescrum.plugins.entryPoints.services.EntryPointsService
 
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
     // the plugin version
-    def version = "0.2"
+    def version = "0.3-BETA"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3.7 > *"
     // the other plugins this plugin depends on
@@ -59,7 +60,10 @@ class EntryPointsGrailsPlugin {
     }
 
     def doWithDynamicMethods = { ctx ->
-        // TODO Implement registering dynamic methods to classes (optional)
+        EntryPointsService service = ctx.getBean('entryPointsService')
+        application.controllerClasses.each {
+            addEntryPointsMethods(it, service)
+        }
     }
 
     def doWithApplicationContext = { applicationContext ->
@@ -85,5 +89,24 @@ class EntryPointsGrailsPlugin {
     def onConfigChange = { event ->
         // TODO Implement code that is executed when the project configuration changes.
         // The event is the same as for 'onChange'.
+    }
+
+    private addEntryPointsMethods(it,service){
+
+        it.clazz.metaClass {
+
+            entryPoints{String ref, Map model = null ->
+                assert ref
+                if (model instanceof Map){
+                    model.each{ request."${it.key}" = it.value }
+                }else{
+                    request.model = model
+                }
+                service.getEntriesToChain(ref)?.each{
+                    forward(action:it.form?.action?:it.action,controller:it.form?.controller?:it.controller)
+                }
+            }
+
+        }
     }
 }

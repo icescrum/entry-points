@@ -33,16 +33,20 @@ class EntryPointBuilder {
         _data.controller = value
     }
 
-    void points(List _points) {
-        _data.points.addAll(_points)
+    void ref(List _ref) {
+        _data.ref.addAll(_ref)
     }
 
-    void points(String[] _points) {
-        _data.points.addAll(_points.toList())
+    void ref(String[] _ref) {
+        _data.ref.addAll(_ref.toList())
     }
 
-    void points(String _points) {
-        points(_points.split(',')*.trim())
+    void ref(String _ref) {
+        ref(_ref.split(',')*.trim())
+    }
+
+    void form (_form){
+        _data.form = _form
     }
     
     def missingMethod(String name, args) {
