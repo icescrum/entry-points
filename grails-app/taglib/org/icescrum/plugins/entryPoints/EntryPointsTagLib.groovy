@@ -19,11 +19,13 @@ package org.icescrum.plugins.entryPoints
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import grails.util.GrailsUtil
+import org.springframework.security.access.AccessDeniedException
 
 class EntryPointsTagLib {
     static namespace = 'entry'
     def entryPointsService
     def pluginManager
+    def menuBarSupport
 
     def point = { attrs ->
         assert attrs.id
@@ -43,11 +45,13 @@ class EntryPointsTagLib {
         }
 
         entryPointsService.getEntries(attrs.id)?.each{ entry ->
-            if (entry.template){
-                    out << g.render(template:entry.template,model:attrs.model,plugin:entry.plugin)
-            }else{
-                out << g.include(action:entry?.action,controller:entry?.controller,params:attrs.model)
-            }
+           if (entry.template){
+               out << g.render(template:entry.template,model:attrs.model,plugin:entry.plugin)
+           }else{
+               def url = createLink(controller:entry?.controller, action:entry?.action).toString() - request.contextPath
+               if(menuBarSupport.permissionDynamicBar(url))
+                   out << g.include(action:entry?.action,controller:entry?.controller,params:attrs.model)
+           }
         }
     }
 }
