@@ -47,15 +47,6 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        build ':maven-publisher:0.7.5'
-    }
-}
-
-grails.project.dependency.distribution = {
-    remoteRepository(id: "pluginsSnapshot", url: "http://repo.icescrum.org/artifactory/plugins-snapshot-local/") {
-        authentication username: "", password: ""
-    }
-    remoteRepository(id: "pluginsRelease", url: "http://repo.icescrum.org/artifactory/plugins-release-local/") {
-        authentication username: "", password: ""
+        build ':maven-publisher:0.8.1'
     }
 }
