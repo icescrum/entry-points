@@ -26,6 +26,21 @@ class EntryPointsTagLib {
     def pluginManager
     def webInvocationPrivilegeEvaluator
 
+    def hook = { attrs ->
+        assert attrs.id
+
+        if (!attrs.model){
+            attrs.model = [:]
+        }
+
+        attrs.model.requestParams = params
+
+        entryPointsService.getEntries(attrs.id)?.each{ entry ->
+            def controller = grailsApplication.controllerClasses.find{ it.name.toLowerCase() == entry.controller }?.getReferenceInstance()
+            controller?."${entry.action}"()
+        }
+    }
+
     def point = { attrs ->
         assert attrs.id
 
