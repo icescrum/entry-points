@@ -18,15 +18,14 @@
 package org.icescrum.plugins.entryPoints
 import grails.util.Environment
 import org.slf4j.LoggerFactory
+import grails.util.GrailsNameUtils
 
 class EntryPointsDeclarationsFactory {
 
     static private final log = LoggerFactory.getLogger(EntryPointsDeclarationsFactory.name)
     
-    static Map<String,Closure> getEntriesDeclarations(grailsApplication, String environment = Environment.current.name) {
+    static Map<String,Closure> getEntriesDeclarations(grailsApplication, pluginManager, String environment = Environment.current.name) {
         
-        def slurper = new ConfigSlurper(environment)
-
         if (log.debugEnabled) {
             log.debug("entries config order: ${grailsApplication.entryPointsClasses*.clazz*.name}")
         }
@@ -37,16 +36,22 @@ class EntryPointsDeclarationsFactory {
             if (log.debugEnabled) {    
                 log.debug("consuming entries config from $it.clazz.name")
             }
-            
-            def entries = slurper.parse(it.clazz).entryPoints
-            if (entries instanceof Closure) {
-                entryPointsDeclarations[it.clazz.name] = entries
-            } else {
-                if (entries instanceof ConfigObject) {
-                    log.warn("entries artefact $it.clazz.name does not define any entry")
+
+            def config = new ConfigSlurper(environment).parse(it.clazz)
+            def loadable = config.pluginName ? pluginManager.getUserPlugins().find{ it.name == config.pluginName && it.isEnabled() } : true
+            if (loadable){
+                def entries = config.entryPoints
+                if (entries instanceof Closure) {
+                    entryPointsDeclarations[config.pluginName ? GrailsNameUtils.getScriptName(config.pluginName) : it.clazz.name] = entries
                 } else {
-                    log.warn("entries artefact $it.clazz.name mapper element is not a Closure")
+                    if (entries instanceof ConfigObject) {
+                        log.warn("entries artefact $it.clazz.name does not define any entry")
+                    } else {
+                        log.warn("entries artefact $it.clazz.name mapper element is not a Closure")
+                    }
                 }
+            }else {
+                log.warn("entries artefact $it.clazz.name mapper element is not loadable")
             }
         }
         entryPointsDeclarations = entryPointsDeclarations.findAll { it != null}

@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 class EntryPointsBuilder implements GroovyInterceptable {
 
+    def pluginName
     private _entries
     private _entryPointBuilder
     private _data = [ref:[]]
@@ -50,7 +51,11 @@ class EntryPointsBuilder implements GroovyInterceptable {
                     _entries[ref] << entry
                     if (log.debugEnabled)
                         log.debug("Defined new entry for point '$ref' -> '$entry'")
-                }else{
+                }else if (_data.template){
+                    entry = [template:_data.template,plugin:pluginName]
+                    _entries[ref] << entry
+                }
+                else{
                     if (log.debugEnabled)
                         log.debug("Entry point must have view OR action AND controller")
                 }

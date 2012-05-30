@@ -22,19 +22,12 @@ import java.util.concurrent.ConcurrentHashMap
 import org.icescrum.plugins.entryPoints.EntryPointsDeclarationsFactory
 import org.icescrum.plugins.entryPoints.EntryPointsBuilder
 
-class EntryPointsService implements InitializingBean {
+class EntryPointsService {
 
     static transactional = false
 
     def grailsApplication
-    def servletContext
     def entriesByPointId
-
-    void afterPropertiesSet() {
-        if (!servletContext) {
-            servletContext = grailsApplication.mainContext.servletContext
-        }
-    }
 
     def getEntries(def pointId){
         entriesByPointId[pointId]
@@ -46,13 +39,14 @@ class EntryPointsService implements InitializingBean {
         }
 
         entriesByPointId = new ConcurrentHashMap()
-        def declarations = EntryPointsDeclarationsFactory.getEntriesDeclarations(grailsApplication)
+        def declarations = EntryPointsDeclarationsFactory.getEntriesDeclarations(grailsApplication, pluginManager)
         def builder = new EntryPointsBuilder(entriesByPointId)
 
         declarations.each { sourceClassName, dsl ->
             if (log.debugEnabled) {
                 log.debug("evaluating entries from $sourceClassName")
             }
+            builder.pluginName = sourceClassName
             dsl.delegate = builder
             dsl.resolveStrategy = Closure.DELEGATE_FIRST
             dsl()

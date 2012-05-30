@@ -21,9 +21,9 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
     // the plugin version
-    def version = "0.3.2"
+    def version = "0.4"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "1.3.7 > *"
+    def grailsVersion = "1.3.8 > *"
     // the other plugins this plugin depends on
     def dependsOn = [:]
     // resources that are excluded from plugin packaging
@@ -43,7 +43,7 @@ class EntryPointsGrailsPlugin {
     // TODO Fill in these fields
     def author = "Vincent Barrier"
     def authorEmail = "barrier.vincent@gmail.com"
-    def title = "Entry points for your grails app (entry points inside gsp)"
+    def title = "Entry points for your grails app (entry points inside gsp & controllers)"
     def description = '''
         used in iceScrum -> http://www.icescrum.org
     '''

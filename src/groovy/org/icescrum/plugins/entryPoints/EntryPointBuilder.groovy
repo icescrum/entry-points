@@ -45,6 +45,10 @@ class EntryPointBuilder {
         ref(_ref.split(',')*.trim())
     }
 
+    void template(String _template) {
+        _data.template = _template
+    }
+
     void form (_form){
         _data.form = _form
     }
