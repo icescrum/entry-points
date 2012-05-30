@@ -28,6 +28,7 @@ class EntryPointsService {
 
     def grailsApplication
     def entriesByPointId
+    def pluginManager
 
     def getEntries(def pointId){
         entriesByPointId[pointId]
