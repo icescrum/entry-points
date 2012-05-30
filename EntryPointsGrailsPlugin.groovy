@@ -21,7 +21,7 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
     // the plugin version
-    def version = "0.4"
+    def version = "0.4.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3.8 > *"
     // the other plugins this plugin depends on
