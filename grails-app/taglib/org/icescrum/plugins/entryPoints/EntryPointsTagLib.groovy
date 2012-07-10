@@ -33,11 +33,9 @@ class EntryPointsTagLib {
             attrs.model = [:]
         }
 
-        attrs.model.requestParams = params
-
         entryPointsService.getEntries(attrs.id)?.each{ entry ->
-            def controller = grailsApplication.controllerClasses.find{ it.name.toLowerCase() == entry.controller }?.getReferenceInstance()
-            controller?."${entry.action}"()
+            def controllerClass = grailsApplication.controllerClasses.find{ it.name.toLowerCase() == entry.controller }
+            grailsApplication.mainContext.getBean(controllerClass.fullName)?."${entry.action}"(params, attrs.model)
         }
     }
 
