@@ -23,7 +23,6 @@ import grails.util.GrailsUtil
 class EntryPointsTagLib {
     static namespace = 'entry'
     def entryPointsService
-    def pluginManager
     def webInvocationPrivilegeEvaluator
 
     def hook = { attrs ->
