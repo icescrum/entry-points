@@ -17,7 +17,6 @@
 */
 package org.icescrum.plugins.entryPoints.services
 
-import org.springframework.beans.factory.InitializingBean
 import java.util.concurrent.ConcurrentHashMap
 import org.icescrum.plugins.entryPoints.EntryPointsDeclarationsFactory
 import org.icescrum.plugins.entryPoints.EntryPointsBuilder

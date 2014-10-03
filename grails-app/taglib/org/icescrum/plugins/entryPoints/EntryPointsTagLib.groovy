@@ -17,8 +17,7 @@
 */
 package org.icescrum.plugins.entryPoints
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import grails.util.GrailsUtil
+import grails.util.Environment
 
 class EntryPointsTagLib {
     static namespace = 'entry'
@@ -47,7 +46,7 @@ class EntryPointsTagLib {
 
         attrs.model.requestParams = params
 
-        if (!GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)){
+        if (Environment.current != Environment.PRODUCTION){
             if (grailsApplication.config.grails.entryPoints?.debug || params._showEntryPoints){
                 out << """<span class='entry-point' title='[model/params: ${attrs.model*.key?.join(',')}]'>
                             entry-point id: ${attrs.id}
@@ -62,7 +61,7 @@ class EntryPointsTagLib {
                def url = createLink(controller:entry?.controller, action:entry?.action).toString() - request.contextPath
                def access = true
                if(webInvocationPrivilegeEvaluator != null){
-                   access = webInvocationPrivilegeEvaluator.isAllowed(org.codehaus.groovy.grails.plugins.springsecurity.SecurityRequestHolder.request.contextPath, url, 'GET', org.springframework.security.core.context.SecurityContextHolder.context?.authentication)
+                   access = webInvocationPrivilegeEvaluator.isAllowed(grails.plugin.springsecurity.web.SecurityRequestHolder.request.contextPath, url, 'GET', org.springframework.security.core.context.SecurityContextHolder.context?.authentication)
                }
                if (access){
                    out << g.include(action:entry?.action,controller:entry?.controller,params:attrs.model)
