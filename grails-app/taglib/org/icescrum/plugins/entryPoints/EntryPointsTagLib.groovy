@@ -44,7 +44,8 @@ class EntryPointsTagLib {
             attrs.model = [:]
         }
 
-        attrs.model.requestParams = params
+        //Hashmap to prevent stackoverflow error WTF grails...
+        attrs.model.requestParams = params as HashMap
 
         if (Environment.current != Environment.PRODUCTION){
             if (grailsApplication.config.grails.entryPoints?.debug || params._showEntryPoints){

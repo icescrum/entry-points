@@ -1,4 +1,4 @@
-<plugin name='entry-points' version='1.0' grailsVersion='2.4 &gt; *'>
+<plugin name='entry-points' version='1.1' grailsVersion='2.4 &gt; *'>
   <author>Vincent Barrier</author>
   <authorEmail>barrier.vincent@gmail.com</authorEmail>
   <title>Entry points for your grails app (entry points inside gsp &amp; controllers)</title>
