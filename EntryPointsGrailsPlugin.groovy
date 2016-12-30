@@ -21,7 +21,7 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
     // the plugin version
-    def version = "1.1"
+    def version = "1.2"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.4 > *"
     // the other plugins this plugin depends on
@@ -87,8 +87,7 @@ class EntryPointsGrailsPlugin {
     }
 
     def onConfigChange = { event ->
-        // TODO Implement code that is executed when the project configuration changes.
-        // The event is the same as for 'onChange'.
+        event.application.mainContext.entryPointsService.reload()
     }
 
     private addEntryPointsMethods(it,service){
