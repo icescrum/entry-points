@@ -20,13 +20,9 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
-    // the plugin version
     def version = "1.2"
-    // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "2.4 > *"
-    // the other plugins this plugin depends on
+    def grailsVersion = "2.5 > *"
     def dependsOn = [:]
-    // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp"
     ]
@@ -40,7 +36,6 @@ class EntryPointsGrailsPlugin {
 
     def loadAfter = ['controllers']
 
-    // TODO Fill in these fields
     def author = "Vincent Barrier"
     def authorEmail = "barrier.vincent@gmail.com"
     def title = "Entry points for your grails app (entry points inside gsp & controllers)"
@@ -48,16 +43,7 @@ class EntryPointsGrailsPlugin {
         used in iceScrum -> http://www.icescrum.org
     '''
 
-    // URL to the plugin's documentation
     def documentation = "http://www.icescrum.org/plugin/entry-points"
-
-    def doWithWebDescriptor = { xml ->
-        // TODO Implement additions to web.xml (optional), this event occurs before 
-    }
-
-    def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
-    }
 
     def doWithDynamicMethods = { ctx ->
         EntryPointsService service = ctx.getBean('entryPointsService')
@@ -89,23 +75,20 @@ class EntryPointsGrailsPlugin {
     def onConfigChange = { event ->
         event.application.mainContext.entryPointsService.reload()
     }
-
-    private addEntryPointsMethods(it,service){
-
+    
+    private addEntryPointsMethods(it, service) {
         it.clazz.metaClass {
-
-            entryPoints{String ref, Map model = null ->
+            entryPoints { String ref, Map model = null ->
                 assert ref
-                if (model instanceof Map){
-                    model.each{ request."${it.key}" = it.value }
-                }else{
+                if (model instanceof Map) {
+                    model.each { request."${it.key}" = it.value }
+                } else {
                     request.model = model
                 }
-                service.getEntriesToChain(ref)?.each{
-                    forward(action:it.form?.action?:it.action,controller:it.form?.controller?:it.controller)
+                service.getEntriesToChain(ref)?.each {
+                    forward(action: it.form?.action ?: it.action, controller: it.form?.controller ?: it.controller)
                 }
             }
-
         }
     }
 }

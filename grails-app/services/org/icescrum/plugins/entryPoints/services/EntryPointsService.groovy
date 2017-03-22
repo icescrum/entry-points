@@ -17,9 +17,10 @@
 */
 package org.icescrum.plugins.entryPoints.services
 
-import java.util.concurrent.ConcurrentHashMap
-import org.icescrum.plugins.entryPoints.EntryPointsDeclarationsFactory
 import org.icescrum.plugins.entryPoints.EntryPointsBuilder
+import org.icescrum.plugins.entryPoints.EntryPointsDeclarationsFactory
+
+import java.util.concurrent.ConcurrentHashMap
 
 class EntryPointsService {
 
@@ -29,7 +30,7 @@ class EntryPointsService {
     def entriesByPointId
     def pluginManager
 
-    def getEntries(def pointId){
+    def getEntries(def pointId) {
         entriesByPointId[pointId]
     }
 
@@ -58,7 +59,7 @@ class EntryPointsService {
         loadEntries()
     }
 
-    def getEntriesToChain(def pointId){
-        entriesByPointId[pointId]?.findAll{it.form}
+    def getEntriesToChain(def pointId) {
+        entriesByPointId[pointId]?.findAll { it.form }
     }
 }

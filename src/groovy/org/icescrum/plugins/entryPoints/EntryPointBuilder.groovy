@@ -18,13 +18,13 @@
 package org.icescrum.plugins.entryPoints
 
 class EntryPointBuilder {
-    
+
     private final _data
 
     EntryPointBuilder(def data) {
-        _data = data    
+        _data = data
     }
-        
+
     void action(String value) {
         _data.action = value
     }
@@ -49,10 +49,10 @@ class EntryPointBuilder {
         _data.template = _template
     }
 
-    void form (_form){
+    void form(_form) {
         _data.form = _form
     }
-    
+
     def missingMethod(String name, args) {
         throw new RuntimeException("Sorry - flavours are not yet supported by the builder!")
     }

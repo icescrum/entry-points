@@ -17,7 +17,7 @@
 */
 package org.icescrum.plugins.entryPoints.artefacts;
 
-import org.codehaus.groovy.grails.commons.*;
+import org.codehaus.groovy.grails.commons.AbstractGrailsClass;
 
 public class DefaultEntryPointsClass extends AbstractGrailsClass implements EntryPointsClass {
     public DefaultEntryPointsClass(Class clazz) {

@@ -16,7 +16,9 @@
 *
 */
 package org.icescrum.plugins.entryPoints
+
 import org.slf4j.LoggerFactory
+
 import java.util.concurrent.ConcurrentHashMap
 
 class EntryPointsBuilder implements GroovyInterceptable {
@@ -24,7 +26,7 @@ class EntryPointsBuilder implements GroovyInterceptable {
     def pluginName
     private _entries
     private _entryPointBuilder
-    private _data = [ref:[]]
+    private _data = [ref: []]
 
     private final log = LoggerFactory.getLogger(this.class.name)
 
@@ -41,23 +43,24 @@ class EntryPointsBuilder implements GroovyInterceptable {
             entryPointDefinition.resolveStrategy = Closure.DELEGATE_FIRST
             entryPointDefinition()
 
-            _data.ref?.each{ ref ->
-                if (!_entries[ref]){
+            _data.ref?.each { ref ->
+                if (!_entries[ref]) {
                     _entries[ref] = []
                 }
                 def entry
-                if (_data.controller){
-                    entry = [action:_data.action?:'index',controller:_data.controller, form:_data.form?:false]
+                if (_data.controller) {
+                    entry = [action: _data.action ?: 'index', controller: _data.controller, form: _data.form ?: false]
                     _entries[ref] << entry
-                    if (log.debugEnabled)
+                    if (log.debugEnabled) {
                         log.debug("Defined new entry for point '$ref' -> '$entry'")
-                }else if (_data.template){
-                    entry = [template:_data.template,plugin:pluginName]
+                    }
+                } else if (_data.template) {
+                    entry = [template: _data.template, plugin: pluginName]
                     _entries[ref] << entry
-                }
-                else{
-                    if (log.debugEnabled)
+                } else {
+                    if (log.debugEnabled) {
                         log.debug("Entry point must have view OR action AND controller")
+                    }
                 }
             }
 

@@ -16,30 +16,27 @@
 *
 */
 package org.icescrum.plugins.entryPoints
+
 import grails.util.Environment
-import org.slf4j.LoggerFactory
 import grails.util.GrailsNameUtils
+import org.slf4j.LoggerFactory
 
 class EntryPointsDeclarationsFactory {
 
     static private final log = LoggerFactory.getLogger(EntryPointsDeclarationsFactory.name)
-    
-    static Map<String,Closure> getEntriesDeclarations(grailsApplication, pluginManager, String environment = Environment.current.name) {
-        
+
+    static Map<String, Closure> getEntriesDeclarations(grailsApplication, pluginManager, String environment = Environment.current.name) {
         if (log.debugEnabled) {
             log.debug("entries config order: ${grailsApplication.entryPointsClasses*.clazz*.name}")
         }
-        
         def entryPointsDeclarations = [:]
-        
         grailsApplication.entryPointsClasses.collect {
-            if (log.debugEnabled) {    
+            if (log.debugEnabled) {
                 log.debug("consuming entries config from $it.clazz.name")
             }
-
             def config = new ConfigSlurper(environment).parse(it.clazz)
-            def loadable = config.pluginName ? pluginManager.getUserPlugins().find{ it.name == config.pluginName && it.isEnabled() } : true
-            if (loadable){
+            def loadable = config.pluginName ? pluginManager.getUserPlugins().find { it.name == config.pluginName && it.isEnabled() } : true
+            if (loadable) {
                 def entries = config.entryPoints
                 if (entries instanceof Closure) {
                     entryPointsDeclarations[config.pluginName ? GrailsNameUtils.getScriptName(config.pluginName) : it.clazz.name] = entries
@@ -50,11 +47,11 @@ class EntryPointsDeclarationsFactory {
                         log.warn("entries artefact $it.clazz.name mapper element is not a Closure")
                     }
                 }
-            }else {
+            } else {
                 log.warn("entries artefact $it.clazz.name mapper element is not loadable")
             }
         }
-        entryPointsDeclarations = entryPointsDeclarations.findAll { it != null}
+        entryPointsDeclarations = entryPointsDeclarations.findAll { it != null }
         entryPointsDeclarations
     }
 }

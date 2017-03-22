@@ -20,54 +20,50 @@ package org.icescrum.plugins.entryPoints
 import grails.util.Environment
 
 class EntryPointsTagLib {
+
     static namespace = 'entry'
+
     def entryPointsService
     def webInvocationPrivilegeEvaluator
 
     def hook = { attrs ->
         assert attrs.id
-
-        if (!attrs.model){
+        if (!attrs.model) {
             attrs.model = [:]
         }
-
-        entryPointsService.getEntries(attrs.id)?.each{ entry ->
-            def controllerClass = grailsApplication.controllerClasses.find{ it.name.toLowerCase() == entry.controller }
+        entryPointsService.getEntries(attrs.id)?.each { entry ->
+            def controllerClass = grailsApplication.controllerClasses.find { it.name.toLowerCase() == entry.controller }
             grailsApplication.mainContext.getBean(controllerClass.fullName)?."${entry.action}"(params, attrs.model)
         }
     }
 
     def point = { attrs ->
         assert attrs.id
-
-        if (!attrs.model){
+        if (!attrs.model) {
             attrs.model = [:]
         }
-
         //Hashmap to prevent stackoverflow error WTF grails...
         attrs.model.requestParams = params as HashMap
-
-        if (Environment.current != Environment.PRODUCTION){
-            if (grailsApplication.config.grails.entryPoints?.debug || params._showEntryPoints){
+        if (Environment.current != Environment.PRODUCTION) {
+            if (grailsApplication.config.grails.entryPoints?.debug || params._showEntryPoints) {
                 out << """<span class='entry-point' title='[model/params: ${attrs.model*.key?.join(',')}]'>
                             entry-point id: ${attrs.id}
                         </span>"""
             }
         }
-
-        entryPointsService.getEntries(attrs.id)?.each{ entry ->
-           if (entry.template){
-               out << g.render(template:entry.template,model:attrs.model,plugin:entry.plugin)
-           }else{
-               def url = createLink(controller:entry?.controller, action:entry?.action).toString() - request.contextPath
-               def access = true
-               if(webInvocationPrivilegeEvaluator != null){
-                   access = webInvocationPrivilegeEvaluator.isAllowed(grails.plugin.springsecurity.web.SecurityRequestHolder.request.contextPath, url, 'GET', org.springframework.security.core.context.SecurityContextHolder.context?.authentication)
-               }
-               if (access){
-                   out << g.include(action:entry?.action,controller:entry?.controller,params:attrs.model)
-               }
-           }
+        entryPointsService.getEntries(attrs.id)?.each { entry ->
+            if (entry.template) {
+                out << g.render(template: entry.template, model: attrs.model, plugin: entry.plugin)
+            } else {
+                def url = createLink(controller: entry?.controller, action: entry?.action).toString() - request.contextPath
+                def access = true
+                if (webInvocationPrivilegeEvaluator != null) {
+                    access = webInvocationPrivilegeEvaluator.isAllowed(grails.plugin.springsecurity.web.SecurityRequestHolder.request.contextPath, url, 'GET', org.springframework.security.core.context.SecurityContextHolder.context?.authentication)
+                }
+                if (access) {
+                    out << g.include(action: entry?.action, controller: entry?.controller, params: attrs.model)
+                }
+            }
         }
     }
 }
