@@ -20,7 +20,7 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
-    def version = "1.2"
+    def version = "1.3"
     def grailsVersion = "2.5 > *"
     def dependsOn = [:]
     def pluginExcludes = [
@@ -30,8 +30,8 @@ class EntryPointsGrailsPlugin {
     def artefacts = [new EntryPointsArtefactHandler()]
 
     def watchedResources = [
-        "file:./grails-app/conf/*EntryPoints.groovy",
-        "file:./plugins/*/grails-app/conf/*EntryPoints.groovy",
+        "file:./grails-app/*/*EntryPoints.groovy",
+        "file:./plugins/*/grails-app/*/*EntryPoints.groovy",
     ]
 
     def loadAfter = ['controllers']
