@@ -43,19 +43,23 @@ class EntryPointsService {
         def declarations = EntryPointsDeclarationsFactory.getEntriesDeclarations(grailsApplication, pluginManager)
         def builder = new EntryPointsBuilder(entriesByPointId)
 
-        declarations.each { sourceClassName, dsl ->
-            if (log.debugEnabled) {
-                log.debug("evaluating entries from $sourceClassName")
+        declarations.each { sourceClassName, dslList ->
+            if (dslList) {
+                if (log.debugEnabled) {
+                    log.debug("Evaluating ${dslList.size()} entry blocks from $sourceClassName")
+                }
+                builder.pluginName = sourceClassName
+                dslList.each { dsl ->
+                    dsl.delegate = builder
+                    dsl.resolveStrategy = Closure.DELEGATE_FIRST
+                    dsl()
+                }
             }
-            builder.pluginName = sourceClassName
-            dsl.delegate = builder
-            dsl.resolveStrategy = Closure.DELEGATE_FIRST
-            dsl()
         }
     }
 
     def reload() {
-        log.info("Reloading entries points")
+        log.info("Reloading entry points")
         loadEntries()
     }
 

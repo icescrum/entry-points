@@ -25,31 +25,25 @@ class EntryPointsDeclarationsFactory {
 
     static private final log = LoggerFactory.getLogger(EntryPointsDeclarationsFactory.name)
 
-    static Map<String, Closure> getEntriesDeclarations(grailsApplication, pluginManager, String environment = Environment.current.name) {
+    static Map<String, List<Closure>> getEntriesDeclarations(grailsApplication, pluginManager, String environment = Environment.current.name) {
         if (log.debugEnabled) {
-            log.debug("entries config order: ${grailsApplication.entryPointsClasses*.clazz*.name}")
+            log.debug("Entries config order: ${grailsApplication.entryPointsClasses*.clazz*.name}")
         }
         def entryPointsDeclarations = [:]
         grailsApplication.entryPointsClasses.collect {
             if (log.debugEnabled) {
-                log.debug("consuming entries config from $it.clazz.name")
+                log.debug("Consuming entries config from $it.clazz.name")
             }
             def config = new ConfigSlurper(environment).parse(it.clazz)
+            def entries = []
             def loadable = config.pluginName ? pluginManager.getUserPlugins().find { it.name == config.pluginName && it.isEnabled() } : true
-            if (loadable) {
-                def entries = config.entryPoints
-                if (entries instanceof Closure) {
-                    entryPointsDeclarations[config.pluginName ? GrailsNameUtils.getScriptName(config.pluginName) : it.clazz.name] = entries
-                } else {
-                    if (entries instanceof ConfigObject) {
-                        log.warn("entries artefact $it.clazz.name does not define any entry")
-                    } else {
-                        log.warn("entries artefact $it.clazz.name mapper element is not a Closure")
-                    }
-                }
-            } else {
-                log.warn("entries artefact $it.clazz.name mapper element is not loadable")
+            if (loadable && config.entryPoints instanceof Closure) {
+                entries << config.entryPoints
             }
+            if (config.entryPointsAlways instanceof Closure) {
+                entries << config.entryPointsAlways
+            }
+            entryPointsDeclarations[config.pluginName ? GrailsNameUtils.getScriptName(config.pluginName) : it.clazz.name] = entries
         }
         entryPointsDeclarations = entryPointsDeclarations.findAll { it != null }
         entryPointsDeclarations
