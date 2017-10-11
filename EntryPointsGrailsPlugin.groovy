@@ -30,8 +30,8 @@ class EntryPointsGrailsPlugin {
     def artefacts = [new EntryPointsArtefactHandler()]
 
     def watchedResources = [
-        "file:./grails-app/*/*EntryPoints.groovy",
-        "file:./plugins/*/grails-app/*/*EntryPoints.groovy",
+            "file:./grails-app/*/*EntryPoints.groovy",
+            "file:./plugins/*/grails-app/*/*EntryPoints.groovy",
     ]
 
     def loadAfter = ['controllers']
@@ -75,7 +75,7 @@ class EntryPointsGrailsPlugin {
     def onConfigChange = { event ->
         event.application.mainContext.entryPointsService.reload()
     }
-    
+
     private addEntryPointsMethods(it, service) {
         it.clazz.metaClass {
             entryPoints { String ref, Map model = null ->
