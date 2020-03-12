@@ -51,9 +51,11 @@ class EntryPointsTagLib {
                         </span>"""
             }
         }
-        entryPointsService.getEntries(attrs.id)?.each { entry ->
+        def entries = entryPointsService.getEntries(attrs.id)
+        entries?.eachWithIndex { entry, i ->
+            def content
             if (entry.template) {
-                out << g.render(template: entry.template, model: attrs.model, plugin: entry.plugin)
+                content = g.render(template: entry.template, model: attrs.model, plugin: entry.plugin)
             } else {
                 def url = createLink(controller: entry?.controller, action: entry?.action).toString() - request.contextPath
                 def access = true
@@ -61,7 +63,13 @@ class EntryPointsTagLib {
                     access = webInvocationPrivilegeEvaluator.isAllowed(grails.plugin.springsecurity.web.SecurityRequestHolder.request.contextPath, url, 'GET', org.springframework.security.core.context.SecurityContextHolder.context?.authentication)
                 }
                 if (access) {
-                    out << g.include(action: entry?.action, controller: entry?.controller, params: attrs.model)
+                    content = g.include(action: entry?.action, controller: entry?.controller, params: attrs.model)
+                }
+            }
+            if (content) {
+                out << content
+                if (attrs.join && i < entries.size() - 1) {
+                    out << attrs.join
                 }
             }
         }

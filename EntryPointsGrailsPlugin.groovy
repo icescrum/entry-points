@@ -20,7 +20,7 @@ import org.icescrum.plugins.entryPoints.services.EntryPointsService
 
 class EntryPointsGrailsPlugin {
     def groupId = 'org.icescrum'
-    def version = "1.4"
+    def version = "1.4.1"
     def grailsVersion = "2.5 > *"
     def dependsOn = [:]
     def pluginExcludes = [
