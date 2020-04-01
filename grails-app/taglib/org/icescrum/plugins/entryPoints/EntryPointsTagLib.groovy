@@ -66,7 +66,7 @@ class EntryPointsTagLib {
                     content = g.include(action: entry?.action, controller: entry?.controller, params: attrs.model)
                 }
             }
-            if (content) {
+            if (content.trim()) {
                 out << content
                 if (attrs.join && i < entries.size() - 1) {
                     out << attrs.join
